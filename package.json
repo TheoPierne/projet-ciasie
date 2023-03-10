@@ -1,12 +1,42 @@
 {
   "name": "projet-ciasie",
   "version": "1.0.0",
-  "description": "",
+  "description": "Comparaison entre API REST et GraphQL",
   "main": "index.js",
+  "files": [
+    "clients",
+    "servers",
+    "commands"
+  ],
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --config .eslintrc.json ."
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "contributors": [
+    "TheoPierne (https://github.com/TheoPierne)",
+    "Baruff54 (https://github.com/Baruff54)",
+    "cassagnebertrand (https://github.com/cassagnebertrand)",
+    "winvdaking (https://github.com/winvdaking)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheoPierne/projet-ciasie.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^5.1.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4"
+  }
 }
