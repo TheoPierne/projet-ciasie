@@ -3,7 +3,7 @@
 const path = require('node:path');
 const process = require('node:process');
 
-require('dotenv').config({ path: path.resolve(process.cwd(), '../../.env') });
+require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
