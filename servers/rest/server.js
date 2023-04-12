@@ -29,6 +29,11 @@ app.get('/messages/:id', async (req, res) => {
   return res.json(msg);
 });
 
+app.post('/message', async (req, res) => {
+  const msg = await Messages.create(req.body);
+  return res.json(msg);
+});
+
 app.get('/user/:id', async (req, res) => {
   const user = await Users.findById(req.params.id).exec();
   return res.json(user);
