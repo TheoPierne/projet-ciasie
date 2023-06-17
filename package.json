@@ -12,6 +12,7 @@
   "scripts": {
     "start-rest": "nodemon --watch servers/rest/* --watch servers/models --watch servers/utils servers/rest/server.js",
     "start-gq": "nodemon --watch servers/graphql/* --watch servers/models --watch servers/utils servers/graphql/server.js",
+    "start-web": "nodemon --watch servers/web/* servers/web/server.js",
     "lint": "eslint --config .eslintrc.json ."
   },
   "keywords": [],

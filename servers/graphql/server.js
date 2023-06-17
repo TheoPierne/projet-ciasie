@@ -15,13 +15,11 @@ const mongoDBConnect = require('../utils/connectDB');
 
 const app = express();
 
-app.all(
-  '/graphql',
-  createHandler({
-    schema: graphqlSchema,
-    rootValue: graphqlResolvers,
-    graphiql: true,
-  }),
+app.all('/graphql', createHandler({
+  schema: graphqlSchema,
+  rootValue: graphqlResolvers,
+  graphiql: true,
+})
 );
 
 mongoDBConnect()
