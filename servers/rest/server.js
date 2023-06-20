@@ -44,6 +44,11 @@ app.get('/user/:id/messages', async (req, res) => {
   return res.json(messages);
 });
 
+app.get('/user', async (req, res) => {
+  const usr = await Users.find({}, '_id').exec();
+  return res.json(usr);
+});
+
 app.listen(SERVER_PORT, () => {
   console.log(`API REST on port: ${SERVER_PORT}`);
 });
