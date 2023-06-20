@@ -7,9 +7,16 @@ require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
 const { SERVER_PORT_WEB } = process.env;
 
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const express = require('express');
 
 const app = express();
+
+app.use(express.static(__dirname));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
 
 app.all('/', (req, res) => res.sendFile(path.join(__dirname, '/www/index.html')));
 

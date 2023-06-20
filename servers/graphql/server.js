@@ -19,8 +19,7 @@ app.all('/graphql', createHandler({
   schema: graphqlSchema,
   rootValue: graphqlResolvers,
   graphiql: true,
-})
-);
+}));
 
 mongoDBConnect()
   .then(() => app.listen(SERVER_PORT, () => console.log(`API GRAPHQL on port: ${SERVER_PORT}`)))

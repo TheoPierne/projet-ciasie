@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     RAMPOSSIBILITY: process.memoryUsage(),
     CPU: process.cpuUsage(),
     TIME: process.hrtime(startTime)[0] + 's & ' + process.hrtime(startTime)[1] + 'ms'
-  })
+  });
 });
 
 app.listen(SERVER_PORT, () => {
