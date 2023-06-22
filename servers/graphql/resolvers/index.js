@@ -68,14 +68,22 @@ module.exports = {
   },
 
   message: async args => {
-    const { id, author } = args;
+    const { id } = args;
     let message = null;
     try {
-      if (id) {
-        message = [await Message.findById(id)];
-      } else if (author) {
-        message = await Message.find({ author: new ObjectId(author) });
-      }
+      message = await Message.findById(id);
+    } catch (err) {
+      console.error(err);
+    }
+
+    return message;
+  },
+
+  messagesByAuthor: async args => {
+    const { id } = args;
+    let message = null;
+    try {
+      message = await Message.find({ author: new ObjectId(id) });
     } catch (err) {
       console.error(err);
     }
