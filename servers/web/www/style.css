@@ -1,12 +1,11 @@
+/*
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
     --dark-color: #333;
 }
 
-*,
-:after,
-:before {
+*, :after, :before {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -26,7 +25,8 @@ ul {
 }
 
 body {
-    background-color: var(--dark-color);
+    color: #f2f2f2;
+    background: var(--dark-color);
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
@@ -34,6 +34,16 @@ body {
     margin: 0;
 }
 
+header {
+
+}
+
 main {
     flex-grow: 1;
 }
+
+footer {
+
+}
+
+ */
