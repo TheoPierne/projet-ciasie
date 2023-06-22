@@ -9,10 +9,10 @@ const { SERVER_PORT_GRAPHQL } = process.env;
 
 const cors = require('cors');
 const express = require('express');
-const { createHandler } = require('graphql-http/lib/use/express');
 const graphqlResolvers = require('./resolvers');
 const graphqlSchema = require('./schema');
 const mongoDBConnect = require('../utils/connectDB');
+const { createHandler } = require('../utils/handler');
 
 const app = express();
 
