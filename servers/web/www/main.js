@@ -172,13 +172,15 @@ reloadBtn.addEventListener('click', async () => {
   objRamChart.data.datasets[0].data[0] = graphQlData.benchmark.RAMPOSSIBILITY.rss / 1000;
   objProcChart.data.datasets[0].data[0] = graphQlData.benchmark.CPU;
   objSizeChart.data.datasets[0].data[0] = graphQlData.size / 1000;
-  objDurationProcessChart.data.datasets[0].data[0] = graphQlData.benchmark.TIME[1] / Math.pow(10, 6);
+  objDurationProcessChart.data.datasets[0].data[0] =
+    graphQlData.benchmark.TIME[0] * 1000 + graphQlData.benchmark.TIME[1] / 1000000;
   objDurationResponseChart.data.datasets[0].data[0] = graphQlData.duration;
 
   objRamChart.data.datasets[0].data[1] = restApiData.benchmark.RAMPOSSIBILITY.rss / 1000;
   objProcChart.data.datasets[0].data[1] = restApiData.benchmark.CPU;
   objSizeChart.data.datasets[0].data[1] = restApiData.size / 1000;
-  objDurationProcessChart.data.datasets[0].data[1] = restApiData.benchmark.TIME[1] / Math.pow(10, 6);
+  objDurationProcessChart.data.datasets[0].data[1] =
+    restApiData.benchmark.TIME[0] * 1000 + restApiData.benchmark.TIME[1] / 1000000;
   objDurationResponseChart.data.datasets[0].data[1] = restApiData.duration;
 
   objRamChart.update();
