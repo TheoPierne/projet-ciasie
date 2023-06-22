@@ -43,7 +43,7 @@ module.exports = {
     return newUser;
   },
 
-  messages: async (req, res) => {
+  messages: async () => {
     let messages = [];
     try {
       messages = await Message.find();
@@ -66,22 +66,3 @@ module.exports = {
     return message;
   },
 };
-
-
-/**
-* 
-* @param {number} startTime 
-* @param {} data 
-* @returns La requête demandée + le benchmark
-*/
-function getBenchmark(startTime, data) {
-  return {
-    data: data,
-    benchmark: {
-      RAMALLOWED: process.memoryUsage.rss(),
-      RAMPOSSIBILITY: process.memoryUsage(),
-      CPU: process.cpuUsage(),
-      TIME: process.hrtime(startTime)
-    },
-  }
-}
