@@ -2,12 +2,12 @@
 
 const path = require('node:path');
 const process = require('node:process');
+const os = require('node:os');
 
 require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
 const { SERVER_PORT_GRAPHQL } = process.env;
 
-const os = require('os');
 const cors = require('cors');
 const express = require('express');
 const graphqlResolvers = require('./resolvers');

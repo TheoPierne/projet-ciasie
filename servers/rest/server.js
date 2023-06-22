@@ -2,6 +2,7 @@
 
 const path = require('node:path');
 const process = require('node:process');
+const os = require('node:os');
 
 require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
@@ -11,7 +12,6 @@ const express = require('express');
 const Messages = require('../models/message');
 const Users = require('../models/user');
 const mongoDBConnect = require('../utils/connectDB');
-const os = require('os');
 
 const app = express();
 const { SERVER_PORT_REST } = process.env;
