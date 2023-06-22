@@ -140,6 +140,12 @@ async function makeGraphQLRequest() {
 
 const reloadBtn = document.querySelector('#reload');
 const selectQuery = document.querySelector('#select-query');
+const graphqlUrl = document.querySelector('#graphql-url');
+const restUrl = document.querySelector('#rest-url');
+const graphqlMethod = document.querySelector('#graphql-method');
+const restMethod = document.querySelector('#rest-method');
+const graphqlBody = document.querySelector('#graphql-body');
+const restBody = document.querySelector('#rest-body');
 
 reloadBtn.addEventListener('click', async () => {
   ramBlur.classList.remove('d-none');
@@ -150,6 +156,13 @@ reloadBtn.addEventListener('click', async () => {
 
   console.log(routeGraphQL[selectQuery.value]);
   console.log(routeApiRest[selectQuery.value]);
+
+  graphqlUrl.innerHTML = JSON.stringify(routeGraphQL[selectQuery.value].url);
+  restUrl.innerHTML = JSON.stringify(routeApiRest[selectQuery.value].url);
+  graphqlMethod.innerHTML = JSON.stringify(routeGraphQL[selectQuery.value].method);
+  restMethod.innerHTML = JSON.stringify(routeApiRest[selectQuery.value].method);
+  graphqlBody.innerHTML = JSON.stringify(routeGraphQL[selectQuery.value].query);
+  restBody.innerHTML = JSON.stringify(routeApiRest[selectQuery.value].body);
 
   // Set data for charts
   /*
@@ -254,7 +267,7 @@ const objSizeChart = new Chart(sizeChart, {
     labels: ['GraphQL', 'REST-Api'],
     datasets: [
       {
-        label: 'Size (Ko)',
+        label: 'Volume de données (Ko)',
         data: [0, 0],
         borderWidth: 1,
         backgroundColor: ['rgba(255, 99, 132)', 'rgba(54, 162, 235)'],
