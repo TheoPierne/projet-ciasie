@@ -1,77 +1,58 @@
 <!doctype html>
-<html lang="fr">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>GraphQL vs REST API</title>
     <link rel="stylesheet" href="www/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-
-<body>
-    <header>
-        <div class="row">
-            <div class="col-5">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected disabled>Choisissez une option...</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
-            <div class="col-2">
-                <button type="button" class="btn btn-outline-success">Reload<i
-                        class="fa-solid fa-arrows-rotate"></i></button>
+<body class="bg-dark">
+<header>
+    <div class="d-flex justify-content-center border-bottom border-secondary mb-5">
+        <div class="d-flex justify-content-between p-5 w-50">
+            <select class="form-select" aria-label="Default select example w-75" id="select-query">
+                <option selected disabled>Choisissez une option...</option>
+                <option value="0">Avoir les utilisateurs</option>
+                <option value="1">Avoir un utilisateur</option>
+                <option value="2">Avoir la liste des messages</option>
+                <option value="3">Avoir la liste des messages d'un utilisateur</option>
+                <option value="4">Avoir un message</option>
+                <option value="5">Ajouter un message</option>
+            </select>
+            <div class="w-25 d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-success" id="reload">
+                    Reload <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
             </div>
         </div>
-    </header>
-    <main class="row">
-        <section id="graph-ql-main" class="col-md-12 col-lg-6">
-            <div class="border  border-warning">
-                <canvas id="graph-ql-chart" width="400" height="400"></canvas>
-            </div>
-            <div class="row">
-                <div class="col-6 row">
-                    <div class="col-6 border border-warning rounded">
+    </div>
+</header>
+<main>
+    <div class="d-flex justify-content-around px-5">
+        <div class="w-25">
+            <canvas id="ram" class="rounded border border-success m-2 p-3 bg-light"></canvas>
+        </div>
+        <div class="w-25">
+            <canvas id="proc" class="rounded border border-success m-2 p-3 bg-light"></canvas>
+        </div>
+        <div class="w-25">
+            <canvas id="time" class="rounded border border-success m-2 p-3 bg-light"></canvas>
+        </div>
+    </div>
+</main>
 
-                    </div>
-                    <div class="col-6 border border-warning rounded">
-
-                    </div>
-
-
-                </div>
-                <div class="col-6 row">
-
-                    <div class="col-6 border border-warning rounded">
-
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-        <section id="rest-api-main" class="col-md-12 col-lg-6">
-
-        </section>
-    </main>
-    <footer>
-
-    </footer>
-
-    <script src="www/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+<script src="www/main.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
