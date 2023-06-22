@@ -5,26 +5,37 @@ const routeApiRest = [
   {
     method: 'get',
     url: '/users',
+    body: null,
   },
   {
     method: 'get',
-    url: '/user/d2fa789fab66eb6d2b2a9a68',
+    url: '/users/d2fa789fab66eb6d2b2a9a68',
+    body: null,
   },
   {
     method: 'get',
     url: '/messages',
+    body: null,
   },
   {
     method: 'get',
-    url: '/user/d2fa789fab66eb6d2b2a9a68/messages',
+    url: '/users/d2fa789fab66eb6d2b2a9a68/messages',
+    body: null,
   },
   {
     method: 'get',
     url: '/messages/3f06f813b84acd6c8b36bbd9',
+    body: null,
   },
   {
     method: 'post',
-    url: '/message',
+    url: '/messages',
+    body: { content: 'Hello World', author: 'd2fa789fab66eb6d2b2a9a68' },
+  },
+  {
+    method: 'get',
+    url: '/users',
+    body: null,
   },
 ];
 
@@ -33,62 +44,83 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}',
+    query: { query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}'},
   },
   {
     method: 'post',
     url: '/graphql',
-    query: '{user(id: "d2fa789fab66eb6d2b2a9a68") {username,phoneNumber,email,avatar,createdAt,}}',
+    query: { query: '{user(id: "d2fa789fab66eb6d2b2a9a68") {username,phoneNumber,email,avatar,createdAt,}}'},
   },
   {
     method: 'post',
     url: '/graphql',
-    query: '{messages{_id,content,createdAt}}',
-  },
-  {
-    method: 'post',
-    url: '/graphql',
-    // eslint-disable-next-line no-inline-comments,no-warning-comments
-    query: "Voir les messages d'un user", // TODO
-  },
-  {
-    method: 'post',
-    url: '/graphql',
-    query: '{message(id:"3f06f813b84acd6c8b36bbd9"){_id,content,createdAt}}',
+    query: { query: '{messages{_id,author,content,createdAt}}'},
   },
   {
     method: 'post',
     url: '/graphql',
     // eslint-disable-next-line no-inline-comments,no-warning-comments
-    query: 'Ajouter un message', // TODO
+    query: { query: '{message(author:"d2fa789fab66eb6d2b2a9a68"){_id,content,createdAt,updatedAt}' },
+  },
+  {
+    method: 'post',
+    url: '/graphql',
+    query: { query: '{message(id:"3f06f813b84acd6c8b36bbd9"){_id,content,createdAt}}' },
+  },
+  {
+    method: 'post',
+    url: '/graphql',
+    // eslint-disable-next-line no-inline-comments,no-warning-comments,max-len
+    query: { mutation: '{createMessage(message: {content:"Hello World", author: "d2fa789fab66eb6d2b2a9a68"}){_id,content,author}}' },
+  },
+  {
+    method: 'post',
+    url: '/graphql',
+    query: { query: '{users{username,phoneNumber}}'},
   },
 ];
+
+const ramBlur = document.querySelector('#ram-blur');
+const procBlur = document.querySelector('#proc-blur');
+const sizeBlur = document.querySelector('#size-blur');
+const durationProcessBlur = document.querySelector('#duration-process-blur');
+const durationResponseBlur = document.querySelector('#duration-response-blur');
 
 // fetch('http://localhost/').then(r => r.json()).then(r => console.log(r));
 
 // TODO: fetch data from server Rest API
 async function makeRestApiRequest() {
   const startTime = Date.now();
-  const restResponse = await fetch(`http://localhost:3030${routeApiRest[selectQuery.value].url}`, {
-    method: `${routeApiRest[selectQuery.value].method}`,
+  const options = {
+    method: routeApiRest[selectQuery.value].method,
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Apikey DONOTSENDAPIKEYS',
     },
-  });
+  };
+
+  if (options.method === 'post') {
+    options.body = JSON.stringify(routeApiRest[selectQuery.value].body);
+  }
+  const restResponse = await fetch(`http://baruff.fr:3030${routeApiRest[selectQuery.value].url}`, options);
 
   const requestDuration = Date.now() - startTime;
   const response = await restResponse.json();
-  const requestSize = +restResponse.headers.get('Content-Length');
+  const benchmark = response.benchmark;
 
-  return { duration: requestDuration, size: requestSize, response };
+  // Suppresion de benchmark dans la réponse pour ne pas fausser la taille de la réponse
+  delete response.benchmark;
+  const requestSize = JSON.stringify(response).length;
+
+  return { duration: requestDuration, size: requestSize, response, benchmark };
 }
 
 // TODO: fetch data from server GraphQL API
 async function makeGraphQLRequest() {
-  const data = JSON.stringify({ query: routeGraphQL[selectQuery.value].query });
+  const data = JSON.stringify(routeGraphQL[selectQuery.value].query);
+  console.log(data)
   const startTime = Date.now();
-  const gqlResponse = await fetch(`http://localhost:3000${routeGraphQL[selectQuery.value].url}`, {
+  const gqlResponse = await fetch(`http://baruff.fr:3000${routeGraphQL[selectQuery.value].url}`, {
     method: `${routeGraphQL[selectQuery.value].method}`,
     body: data,
     headers: {
@@ -100,15 +132,24 @@ async function makeGraphQLRequest() {
 
   const requestDuration = Date.now() - startTime;
   const response = await gqlResponse.json();
+  const benchmark = response.benchmark;
+  // Suppresion de benchmark dans la réponse pour ne pas fausser la taille de la réponse
+  delete response.benchmark;
   const requestSize = JSON.stringify(response).length;
 
-  return { duration: requestDuration, size: requestSize, response };
+  return { duration: requestDuration, size: requestSize, response, benchmark };
 }
 
 const reloadBtn = document.querySelector('#reload');
 const selectQuery = document.querySelector('#select-query');
 
 reloadBtn.addEventListener('click', async () => {
+  ramBlur.classList.remove('d-none');
+  procBlur.classList.remove('d-none');
+  sizeBlur.classList.remove('d-none');
+  durationProcessBlur.classList.remove('d-none');
+  durationResponseBlur.classList.remove('d-none');
+
   console.log(routeGraphQL[selectQuery.value]);
   console.log(routeApiRest[selectQuery.value]);
 
@@ -130,22 +171,36 @@ reloadBtn.addEventListener('click', async () => {
 
   console.log(graphQlData, restApiData);
 
-  objRamChart.data.datasets[0].data[0] = graphQlData.duration;
-  objProcChart.data.datasets[0].data[0] = 0; // gqlData.proc;
-  objTimeChart.data.datasets[0].data[0] = graphQlData.size / 1000;
+  objRamChart.data.datasets[0].data[0] = graphQlData.benchmark.RAMPOSSIBILITY.rss / 1000;
+  objProcChart.data.datasets[0].data[0] = graphQlData.benchmark.CPU.system;
+  objSizeChart.data.datasets[0].data[0] = graphQlData.size / 1000;
+  objDurationProcessChart.data.datasets[0].data[0] = graphQlData.benchmark.TIME[1] / Math.pow(10, 6);
+  objDurationResponseChart.data.datasets[0].data[0] = graphQlData.duration;
 
-  objRamChart.data.datasets[0].data[1] = restApiData.duration;
-  objProcChart.data.datasets[0].data[1] = 0; // restData.proc;
-  objTimeChart.data.datasets[0].data[1] = restApiData.size / 1000;
+  objRamChart.data.datasets[0].data[1] = restApiData.benchmark.RAMPOSSIBILITY.rss / 1000;
+  objProcChart.data.datasets[0].data[1] = restApiData.benchmark.CPU.system;
+  objSizeChart.data.datasets[0].data[1] = restApiData.size / 1000;
+  objDurationProcessChart.data.datasets[0].data[1] = restApiData.benchmark.TIME[1] / Math.pow(10, 6);
+  objDurationResponseChart.data.datasets[0].data[1] = restApiData.duration;
 
   objRamChart.update();
   objProcChart.update();
-  objTimeChart.update();
+  objSizeChart.update();
+  objDurationProcessChart.update();
+  objDurationResponseChart.update();
+
+  ramBlur.classList.add('d-none');
+  procBlur.classList.add('d-none');
+  sizeBlur.classList.add('d-none');
+  durationProcessBlur.classList.add('d-none');
+  durationResponseBlur.classList.add('d-none');
 });
 
 const ramChart = document.getElementById('ram');
 const procChart = document.getElementById('proc');
-const timeChart = document.getElementById('time');
+const sizeChart = document.getElementById('size');
+const durationProcessChart = document.getElementById('duration-process');
+const durationResponseChart = document.getElementById('duration-response');
 
 // eslint-disable-next-line no-new,no-undef
 const objRamChart = new Chart(ramChart, {
@@ -193,7 +248,7 @@ const objProcChart = new Chart(procChart, {
 });
 
 // eslint-disable-next-line no-new,no-undef
-const objTimeChart = new Chart(timeChart, {
+const objSizeChart = new Chart(sizeChart, {
   type: 'bar',
   data: {
     labels: ['GraphQL', 'REST-Api'],
@@ -207,6 +262,54 @@ const objTimeChart = new Chart(timeChart, {
     ],
   },
   options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
+
+// eslint-disable-next-line no-new,no-undef
+const objDurationProcessChart = new Chart(durationProcessChart, {
+  type: 'bar',
+  data: {
+    labels: ['GraphQL', 'REST-Api'],
+    datasets: [
+      {
+        label: 'Durée Processus (ms)',
+        data: [0, 0],
+        borderWidth: 1,
+        backgroundColor: ['rgba(255, 99, 132)', 'rgba(54, 162, 235)'],
+      },
+    ],
+  },
+  options: {
+    indexAxis: 'y',
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  },
+});
+
+// eslint-disable-next-line no-new,no-undef
+const objDurationResponseChart = new Chart(durationResponseChart, {
+  type: 'bar',
+  data: {
+    labels: ['GraphQL', 'REST-Api'],
+    datasets: [
+      {
+        label: 'Durée Réponse (ms)',
+        data: [0, 0],
+        borderWidth: 1,
+        backgroundColor: ['rgba(255, 99, 132)', 'rgba(54, 162, 235)'],
+      },
+    ],
+  },
+  options: {
+    indexAxis: 'y',
     scales: {
       y: {
         beginAtZero: true,
