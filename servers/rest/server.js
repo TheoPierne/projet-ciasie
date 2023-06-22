@@ -29,13 +29,13 @@ app.get('/user/:id', async (req, res) => res.send(getBenchmark(process.hrtime(),
 
 app.get('/user/:id/messages', async (req, res) => res.send(getBenchmark(process.hrtime(), await Messages.find({ 'author': req.params.id }).exec())));
 
-app.get('/user', async (req, res) => res.send(getBenchmark(process.hrtime(), await Users.find({}, '_id').exec())));
+app.get('/users', async (req, res) => res.send(getBenchmark(process.hrtime(), await Users.find({}, '_id').exec())));
 
 app.get('/', (req, res) => res.send(getBenchmark(process.hrtime(), null)));
 
 mongoDBConnect()
-  .then(() => app.listen(SERVER_PORT, () => console.log(`REST API on port: ${SERVER_PORT}`)))
-  .catch(console.error);
+    .then(() => app.listen(SERVER_PORT, () => console.log(`REST API on port: ${SERVER_PORT}`)))
+    .catch(console.error);
 
 /**
  * 
@@ -44,13 +44,13 @@ mongoDBConnect()
  * @returns La requête demandée + le benchmark
  */
 function getBenchmark(startTime, data) {
-  return {
-    data: data,
-    benchmark: {
-      RAMALLOWED: process.memoryUsage.rss() + ' octets',
-      RAMPOSSIBILITY: process.memoryUsage(),
-      CPU: process.cpuUsage(),
-      TIME: process.hrtime(startTime)[0] + 's & ' + process.hrtime(startTime)[1] + 'ms'
-    },
-  }
+    return {
+        data: data,
+        benchmark: {
+            RAMALLOWED: process.memoryUsage.rss() + ' octets',
+            RAMPOSSIBILITY: process.memoryUsage(),
+            CPU: process.cpuUsage(),
+            TIME: process.hrtime(startTime)[0] + 's & ' + process.hrtime(startTime)[1] + 'ms'
+        },
+    }
 }
