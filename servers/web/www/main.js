@@ -322,7 +322,7 @@ const objDurationResponseChart = new Chart(durationResponseChart, {
     labels: ['GraphQL', 'REST-Api'],
     datasets: [
       {
-        label: 'Durée Réponse (ms)',
+        label: 'Temps de Réponse (ms)',
         data: [0, 0],
         borderWidth: 1,
         backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)'],
