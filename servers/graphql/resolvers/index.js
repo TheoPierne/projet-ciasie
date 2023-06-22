@@ -1,5 +1,7 @@
 'use strict';
 
+const { ObjectId } = require('mongoose').Types;
+
 const Message = require('../../models/message');
 const User = require('../../models/user');
 
@@ -70,9 +72,9 @@ module.exports = {
     let message = null;
     try {
       if (id) {
-        message = await Message.findById(id);
+        message = [await Message.findById(id)];
       } else if (author) {
-        message = await Message.find({ author });
+        message = await Message.find({ author: new ObjectId(author) });
       }
     } catch (err) {
       console.error(err);

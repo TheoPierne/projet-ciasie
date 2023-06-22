@@ -34,7 +34,7 @@ module.exports = buildSchema(`
         users: [User!]
         user(id: ID): User!
         messages: [Message!]
-        message(id: ID): Message!
+        message(id: ID, author: ID): [Message!]
         messagesByAuthor(id: ID): [Message!]
     }
 
