@@ -244,7 +244,7 @@ const objProcChart = new Chart(procChart, {
     labels: ['GraphQL', 'REST-Api'],
     datasets: [
       {
-        label: 'PROC (%)',
+        label: 'CPU (%)',
         data: [0, 0],
         borderWidth: 1,
         backgroundColor: ['rgba(255, 99, 132)', 'rgba(54, 162, 235)'],
