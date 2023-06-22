@@ -5,30 +5,37 @@ const routeApiRest = [
   {
     method: 'get',
     url: '/users',
+    body: null,
   },
   {
     method: 'get',
     url: '/users/d2fa789fab66eb6d2b2a9a68',
+    body: null,
   },
   {
     method: 'get',
     url: '/messages',
+    body: null,
   },
   {
     method: 'get',
     url: '/users/d2fa789fab66eb6d2b2a9a68/messages',
+    body: null,
   },
   {
     method: 'get',
     url: '/messages/3f06f813b84acd6c8b36bbd9',
+    body: null,
   },
   {
     method: 'post',
     url: '/messages',
+    body: { content: 'Hello World', author: 'd2fa789fab66eb6d2b2a9a68' },
   },
   {
     method: 'get',
     url: '/users',
+    body: null,
   },
 ];
 
@@ -37,39 +44,39 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}',
+    query: { query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}'},
   },
   {
     method: 'post',
     url: '/graphql',
-    query: '{user(id: "d2fa789fab66eb6d2b2a9a68") {username,phoneNumber,email,avatar,createdAt,}}',
+    query: { query: '{user(id: "d2fa789fab66eb6d2b2a9a68") {username,phoneNumber,email,avatar,createdAt,}}'},
   },
   {
     method: 'post',
     url: '/graphql',
-    query: '{messages{_id,author,content,createdAt}}',
-  },
-  {
-    method: 'post',
-    url: '/graphql',
-    // eslint-disable-next-line no-inline-comments,no-warning-comments
-    query: "Voir les messages d'un user", // TODO
-  },
-  {
-    method: 'post',
-    url: '/graphql',
-    query: '{message(id:"3f06f813b84acd6c8b36bbd9"){_id,content,createdAt}}',
+    query: { query: '{messages{_id,author,content,createdAt}}'},
   },
   {
     method: 'post',
     url: '/graphql',
     // eslint-disable-next-line no-inline-comments,no-warning-comments
-    query: 'Ajouter un message', // TODO
+    query: { query: '{message(author:"d2fa789fab66eb6d2b2a9a68"){_id,content,createdAt,updatedAt}' },
   },
   {
     method: 'post',
     url: '/graphql',
-    query: '{users{username,phoneNumber}}',
+    query: { query: '{message(id:"3f06f813b84acd6c8b36bbd9"){_id,content,createdAt}}' },
+  },
+  {
+    method: 'post',
+    url: '/graphql',
+    // eslint-disable-next-line no-inline-comments,no-warning-comments,max-len
+    query: { mutation: '{createMessage(message: {content:"Hello World", author: "d2fa789fab66eb6d2b2a9a68"}){_id,content,author}}' },
+  },
+  {
+    method: 'post',
+    url: '/graphql',
+    query: { query: '{users{username,phoneNumber}}'},
   },
 ];
 
@@ -84,13 +91,18 @@ const durationResponseBlur = document.querySelector('#duration-response-blur');
 // TODO: fetch data from server Rest API
 async function makeRestApiRequest() {
   const startTime = Date.now();
-  const restResponse = await fetch(`http://baruff.fr:3030${routeApiRest[selectQuery.value].url}`, {
-    method: `${routeApiRest[selectQuery.value].method}`,
+  const options = {
+    method: routeApiRest[selectQuery.value].method,
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Apikey DONOTSENDAPIKEYS',
     },
-  });
+  };
+
+  if (options.method === 'post') {
+    options.body = JSON.stringify(routeApiRest[selectQuery.value].body);
+  }
+  const restResponse = await fetch(`http://baruff.fr:3030${routeApiRest[selectQuery.value].url}`, options);
 
   const requestDuration = Date.now() - startTime;
   const response = await restResponse.json();
@@ -105,7 +117,8 @@ async function makeRestApiRequest() {
 
 // TODO: fetch data from server GraphQL API
 async function makeGraphQLRequest() {
-  const data = JSON.stringify({ query: routeGraphQL[selectQuery.value].query });
+  const data = JSON.stringify(routeGraphQL[selectQuery.value].query);
+  console.log(data)
   const startTime = Date.now();
   const gqlResponse = await fetch(`http://baruff.fr:3000${routeGraphQL[selectQuery.value].url}`, {
     method: `${routeGraphQL[selectQuery.value].method}`,
