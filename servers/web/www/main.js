@@ -44,12 +44,12 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    query: { query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}'},
+    query: { query: '{users{_id,username,phoneNumber,email,avatar,createdAt}}' },
   },
   {
     method: 'post',
     url: '/graphql',
-    query: { query: '{user(id: "d2fa789fab66eb6d2b2a9a68") {username,phoneNumber,email,avatar,createdAt,}}'},
+    query: { query: '{user(id:"d2fa789fab66eb6d2b2a9a68"){username,phoneNumber,email,avatar,createdAt,}}' },
   },
   {
     method: 'post',
