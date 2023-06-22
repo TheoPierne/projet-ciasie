@@ -11,6 +11,7 @@ const express = require('express');
 const Messages = require('../models/message');
 const Users = require('../models/user');
 const mongoDBConnect = require('../utils/connectDB');
+const os = require('os');
 
 const app = express();
 const { SERVER_PORT_REST } = process.env;
@@ -55,8 +56,31 @@ function getBenchmark(startTime, data) {
     benchmark: {
       RAMALLOWED: process.memoryUsage.rss(),
       RAMPOSSIBILITY: process.memoryUsage(),
-      CPU: process.cpuUsage(),
+      CPU: getCpuUsage(),
       TIME: process.hrtime(startTime),
     },
   };
+}
+
+function getCpuUsage() {
+  const cpuInfo = os.cpus();
+  const numCores = cpuInfo.length;
+
+  let totalIdle = 0;
+  let totalTick = 0;
+
+  for (let i = 0; i < numCores; i++) {
+    const cpu = cpuInfo[i];
+
+    for (let type in cpu.times) {
+      totalTick += cpu.times[type];
+    }
+
+    totalIdle += cpu.times.idle;
+  }
+
+  const idle = totalIdle / numCores;
+  const total = totalTick / numCores;
+
+  return (100 - ~~(100 * idle / total));
 }

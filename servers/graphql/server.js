@@ -7,6 +7,7 @@ require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
 const { SERVER_PORT_GRAPHQL } = process.env;
 
+const os = require('os');
 const cors = require('cors');
 const express = require('express');
 const graphqlResolvers = require('./resolvers');
@@ -39,7 +40,30 @@ function getBenchmark(startTime) {
   return {
     RAMALLOWED: process.memoryUsage.rss(),
     RAMPOSSIBILITY: process.memoryUsage(),
-    CPU: process.cpuUsage(),
+    CPU: getCpuUsage(),
     TIME: process.hrtime(startTime)
   }
+}
+
+function getCpuUsage() {
+  const cpuInfo = os.cpus();
+  const numCores = cpuInfo.length;
+
+  let totalIdle = 0;
+  let totalTick = 0;
+
+  for (let i = 0; i < numCores; i++) {
+    const cpu = cpuInfo[i];
+
+    for (let type in cpu.times) {
+      totalTick += cpu.times[type];
+    }
+
+    totalIdle += cpu.times.idle;
+  }
+
+  const idle = totalIdle / numCores;
+  const total = totalTick / numCores;
+
+  return (100 - ~~(100 * idle / total));
 }
