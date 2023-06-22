@@ -1,12 +1,11 @@
 'use strict';
 
+const { ObjectId } = require('mongoose').Types;
+
 const Message = require('../../models/message');
 const User = require('../../models/user');
 
-let startTime = process.hrtime();
-
 module.exports = {
-
   users: async () => {
     let usersFetched = [];
     try {
@@ -43,6 +42,20 @@ module.exports = {
     return newUser;
   },
 
+  createMessage: async args => {
+    let newMessage = null;
+    try {
+      console.log(args);
+      const { content, author } = args.message;
+      const user = new Message({ content, author });
+      newMessage = await user.save();
+    } catch (err) {
+      console.error(err);
+    }
+
+    return newMessage;
+  },
+
   messages: async () => {
     let messages = [];
     try {
@@ -55,10 +68,14 @@ module.exports = {
   },
 
   message: async args => {
-    const { id } = args;
+    const { id, author } = args;
     let message = null;
     try {
-      message = await Message.findById(id);
+      if (id) {
+        message = [await Message.findById(id)];
+      } else if (author) {
+        message = await Message.find({ author: new ObjectId(author) });
+      }
     } catch (err) {
       console.error(err);
     }
