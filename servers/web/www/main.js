@@ -59,7 +59,7 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    query: { query: '{message(author:"d2fa789fab66eb6d2b2a9a68"){_id,content,createdAt,updatedAt}' },
+    query: { query: '{messagesByAuthor(id:"d2fa789fab66eb6d2b2a9a68"){_id, content, createdAt}}' },
   },
   {
     method: 'post',
@@ -170,13 +170,13 @@ reloadBtn.addEventListener('click', async () => {
   console.log(graphQlData, restApiData);
 
   objRamChart.data.datasets[0].data[0] = graphQlData.benchmark.RAMPOSSIBILITY.rss / 1000;
-  objProcChart.data.datasets[0].data[0] = graphQlData.benchmark.CPU.system;
+  objProcChart.data.datasets[0].data[0] = graphQlData.benchmark.CPU;
   objSizeChart.data.datasets[0].data[0] = graphQlData.size / 1000;
   objDurationProcessChart.data.datasets[0].data[0] = graphQlData.benchmark.TIME[1] / Math.pow(10, 6);
   objDurationResponseChart.data.datasets[0].data[0] = graphQlData.duration;
 
   objRamChart.data.datasets[0].data[1] = restApiData.benchmark.RAMPOSSIBILITY.rss / 1000;
-  objProcChart.data.datasets[0].data[1] = restApiData.benchmark.CPU.system;
+  objProcChart.data.datasets[0].data[1] = restApiData.benchmark.CPU;
   objSizeChart.data.datasets[0].data[1] = restApiData.size / 1000;
   objDurationProcessChart.data.datasets[0].data[1] = restApiData.benchmark.TIME[1] / Math.pow(10, 6);
   objDurationResponseChart.data.datasets[0].data[1] = restApiData.duration;
