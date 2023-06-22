@@ -59,7 +59,6 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    // eslint-disable-next-line no-inline-comments,no-warning-comments
     query: { query: '{message(author:"d2fa789fab66eb6d2b2a9a68"){_id,content,createdAt,updatedAt}' },
   },
   {
@@ -70,8 +69,7 @@ const routeGraphQL = [
   {
     method: 'post',
     url: '/graphql',
-    // eslint-disable-next-line no-inline-comments,no-warning-comments,max-len
-    query: { mutation: '{createMessage(message: {content:"Hello World", author: "d2fa789fab66eb6d2b2a9a68"}){_id,content,author}}' },
+    query: { query: 'mutation {createMessage(message: {content:"Hello World", author: "d2fa789fab66eb6d2b2a9a68"}){_id,content,author}}' },
   },
   {
     method: 'post',
