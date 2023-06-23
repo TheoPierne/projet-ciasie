@@ -12,6 +12,7 @@
   "scripts": {
     "start-rest": "nodemon --watch servers/rest/* --watch servers/models --watch servers/utils servers/rest/server.js",
     "start-gq": "nodemon --watch servers/graphql/* --watch servers/models --watch servers/utils servers/graphql/server.js",
+    "start-web": "nodemon servers/web/server.js",
     "lint": "eslint --config .eslintrc.json ."
   },
   "keywords": [],
@@ -34,7 +35,8 @@
     "graphql": "^16.6.0",
     "graphql-http": "^1.19.0",
     "mongodb": "^5.6.0",
-    "mongoose": "^7.2.3"
+    "mongoose": "^7.2.3",
+    "pidusage": "^3.0.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
